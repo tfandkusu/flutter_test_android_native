@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 
+import 'other.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -23,6 +25,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page Edited'),
+      routes: <String, WidgetBuilder>{
+        '/other': (BuildContext context) => OtherPage(title: '別の画面')
+      },
     );
   }
 }
@@ -46,8 +51,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // この変数はデータバインディングされている
   int _counter = 0;
 
+  // OSネイティブのメソッドを呼び出すチャンネル
   static const methodChannel = const MethodChannel('com.example.flutter_app');
 
   void _incrementCounter() {
@@ -109,14 +116,33 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
+            MaterialButton(
+              child: Text('別の画面を開く'),
+              onPressed: callOtherWindow,
+              color: Theme.of(context).primaryColor,
+              textColor: Colors.white,
+            ),
+            MaterialButton(
+              child: Text('Androidネイティブの画面を開く'),
+              onPressed: callCameraActivity,
+              color: Colors.green,
+              textColor: Colors.white,
+            )
           ],
         ),
       ),
+      // ボタンを設置する
       floatingActionButton: FloatingActionButton(
-        onPressed: callCameraActivity,
+        onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  // 別の画面を開く
+  void callOtherWindow() {
+    Navigator.of(context).pushNamed('/other',
+        arguments: OtherPageArguments('たろう'));
   }
 }
