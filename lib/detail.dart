@@ -24,20 +24,19 @@ class DetailPageState extends State<DetailPage> {
   int _id;
 
   //氏名
-  String _name = "";
+  String _name;
 
   //社名
-  String _company = "";
+  String _company;
 
   //所属
-  String _division = "";
+  String _division;
 
   //役職
-  String _title = "";
+  String _title;
 
   @override
   Widget build(BuildContext context) {
-    // TODO プログレスを表示する
     // TODO ネットワークエラー
     return Scaffold(
         appBar: AppBar(title: Text('名刺詳細')),
@@ -45,13 +44,24 @@ class DetailPageState extends State<DetailPage> {
             padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(_name),
-                Text(_company),
-                Text(_division),
-                Text(_title),
-              ],
+              children: makeChildren(),
             )));
+  }
+
+  // paddingの中の要素たち
+  List<Widget> makeChildren() {
+    if (_name == null) {
+      // 名刺が無いのでプログレスを表示
+      return <Widget>[CircularProgressIndicator()];
+    } else {
+      // 名刺を表示
+      return <Widget>[
+        Text(_name),
+        Text(_company),
+        Text(_division),
+        Text(_title),
+      ];
+    }
   }
 
   @override
