@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 
+import 'detail.dart';
 import 'other.dart';
 
 void main() => runApp(MyApp());
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page Edited'),
       routes: <String, WidgetBuilder>{
-        '/other': (BuildContext context) => OtherPage(title: '別の画面')
+        '/other': (BuildContext context) => OtherPage(title: '別の画面'),
+        '/detail': (BuildContext context) => DetailPage()
       },
     );
   }
@@ -118,13 +120,19 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             MaterialButton(
               child: Text('別の画面を開く'),
-              onPressed: callOtherWindow,
+              onPressed: callOtherPage,
               color: Theme.of(context).primaryColor,
               textColor: Colors.white,
             ),
             MaterialButton(
               child: Text('Androidネイティブの画面を開く'),
               onPressed: callCameraActivity,
+              color: Colors.green,
+              textColor: Colors.white,
+            ),
+            MaterialButton(
+              child: Text('WebAPIを呼び出す'),
+              onPressed: callDetailPage,
               color: Colors.green,
               textColor: Colors.white,
             )
@@ -140,9 +148,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // 別の画面を開く
-  void callOtherWindow() {
-    Navigator.of(context).pushNamed('/other',
-        arguments: OtherPageArguments('たろう'));
+  // 別のページを開く
+  void callOtherPage() {
+    Navigator.of(context)
+        .pushNamed('/other', arguments: OtherPageArguments('たろう'));
+  }
+
+  // WebAPI呼び出しページを開く
+  void callDetailPage() {
+    Navigator.of(context)
+        .pushNamed('/detail', arguments: DetailPageArguments(1));
   }
 }
